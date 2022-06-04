@@ -16,7 +16,7 @@ const mapFunction = function () {
 };
 
 const reduceFunction = function (key, values) {
-  let avg = values[0].avgBMI;
+  let sum = 0;
   let min = values[0].minBMI;
   let max = values[0].maxBMI;
   let counter = 0;
@@ -28,11 +28,12 @@ const reduceFunction = function (key, values) {
     if (e.maxBMI > max) {
       max = e.maxBMI;
     }
+    sum+=e.avgBMI;
     counter += e.count;
   });
 
   return {
-    avgBMI: avg,
+    avgBMI: sum,
     minBMI: min,
     maxBMI: max,
     count: counter,
@@ -41,7 +42,7 @@ const reduceFunction = function (key, values) {
 
 const finalFunction = function (key, redVal) {
   return {
-    avgBMI: (redVal.minBMI + redVal.maxBMI) / 2,
+    avgBMI: redVal.avgBMI/redVal.count,
     minBMI: redVal.minBMI,
     maxBMI: redVal.maxBMI,
     count: redVal.count,
